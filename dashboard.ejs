@@ -1,0 +1,84 @@
+<%- include('../partials/header') %>
+
+<section class="section">
+  <div class="container">
+    <div class="admin-header">
+      <h1 class="section-title" style="margin-bottom:0;"><%= t('admin_dashboard') %></h1>
+      <a href="/admin/cars/new" class="btn btn-gold btn-sm"><%= t('add_new_car') %></a>
+    </div>
+
+    <h2 style="font-size:1.2rem;margin-top:36px;"><%= t('manage_cars') %></h2>
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th><%= t('car_label') %></th>
+            <th><%= t('listing_type') %></th>
+            <th><%= t('rent_price') %></th>
+            <th><%= t('sell_price') %></th>
+            <th><%= t('status') %></th>
+            <th><%= t('actions') %></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% cars.forEach(function(car) { %>
+            <tr>
+              <td><%= car.titleEn %></td>
+              <td><%= car.listingType %></td>
+              <td><%= car.rentPricePerDay ? car.rentPricePerDay.toLocaleString() : '—' %></td>
+              <td><%= car.sellPrice ? car.sellPrice.toLocaleString() : '—' %></td>
+              <td><span class="status-pill <%= car.status %>"><%= t(car.status) %></span></td>
+              <td>
+                <a href="/admin/cars/<%= car.id %>/edit" class="btn btn-outline btn-sm"><%= t('edit') %></a>
+                <form action="/admin/cars/<%= car.id %>/delete" method="POST" class="inline-form" onsubmit="return confirm('<%= t('delete') %>?');">
+                  <button type="submit" class="btn btn-outline btn-sm" style="border-color:var(--red-accent);color:var(--red-accent);"><%= t('delete') %></button>
+                </form>
+              </td>
+            </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 style="font-size:1.2rem;margin-top:44px;"><%= t('all_bookings') %></h2>
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th><%= t('customer') %></th>
+            <th><%= t('car_label') %></th>
+            <th><%= t('booking_type') %></th>
+            <th><%= t('dates') %></th>
+            <th><%= t('total_price') %></th>
+            <th><%= t('status') %></th>
+            <th><%= t('actions') %></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% bookings.forEach(function(b) { %>
+            <tr>
+              <td><%= b.user ? b.user.fullName + ' (' + b.user.phone + ')' : '—' %></td>
+              <td><%= b.car ? b.car.titleEn : '—' %></td>
+              <td><%= b.type === 'rent' ? t('rent_type') : t('sell_type') %></td>
+              <td><%= b.type === 'rent' ? (b.startDate + ' -> ' + b.endDate) : '—' %></td>
+              <td><%= b.totalPrice ? b.totalPrice.toLocaleString() + ' ETB' : '—' %></td>
+              <td><span class="status-pill <%= b.status %>"><%= t(b.status) %></span></td>
+              <td>
+                <form action="/admin/bookings/<%= b.id %>/status" method="POST" class="inline-form">
+                  <input type="hidden" name="status" value="confirmed" />
+                  <button type="submit" class="btn btn-outline btn-sm"><%= t('confirm') %></button>
+                </form>
+                <form action="/admin/bookings/<%= b.id %>/status" method="POST" class="inline-form">
+                  <input type="hidden" name="status" value="cancelled" />
+                  <button type="submit" class="btn btn-outline btn-sm" style="border-color:var(--red-accent);color:var(--red-accent);"><%= t('cancel') %></button>
+                </form>
+              </td>
+            </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<%- include('../partials/footer') %>

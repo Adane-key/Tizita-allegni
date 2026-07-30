@@ -1,0 +1,94 @@
+<%- include('partials/header') %>
+
+<section class="hero">
+  <div class="container hero-inner">
+    <div>
+      <div class="location-badge"><span class="pin">&#9679;</span> <%= t('location_label') %></div>
+      <div class="hero-eyebrow"><%= t('site_name') %></div>
+      <h1><%= t('tagline') %></h1>
+      <p class="sub"><%= t('hero_sub') %></p>
+      <div class="hero-ctas">
+        <a href="/cars?type=rent" class="btn btn-gold"><%= t('cta_rent') %></a>
+        <a href="/cars?type=sell" class="btn btn-outline"><%= t('cta_sell') %></a>
+      </div>
+    </div>
+    <div class="road-svg-wrap">
+      <svg viewBox="0 0 420 320" xmlns="http://www.w3.org/2000/svg">
+        <path d="M20 300 C 120 260, 100 160, 200 140 S 340 60, 400 20" stroke="#2c3235" stroke-width="46" fill="none" stroke-linecap="round"/>
+        <path d="M20 300 C 120 260, 100 160, 200 140 S 340 60, 400 20" stroke="#e8a93b" stroke-width="3" stroke-dasharray="18 22" fill="none" stroke-linecap="round"/>
+        <circle cx="20" cy="300" r="10" fill="#2f8a63"/>
+        <circle cx="400" cy="20" r="10" fill="#e8a93b"/>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <h2 class="section-title"><%= t('home_intro_title') %></h2>
+    <p class="section-sub" style="max-width:70ch;"><%= t('home_intro_body') %></p>
+
+    <div class="why-grid">
+      <div class="why-card">
+        <span class="num">01</span>
+        <h3><%= t('why_1_title') %></h3>
+        <p><%= t('why_1_desc') %></p>
+      </div>
+      <div class="why-card">
+        <span class="num">02</span>
+        <h3><%= t('why_2_title') %></h3>
+        <p><%= t('why_2_desc') %></p>
+      </div>
+      <div class="why-card">
+        <span class="num">03</span>
+        <h3><%= t('why_3_title') %></h3>
+        <p><%= t('why_3_desc') %></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="padding-top:0;">
+  <div class="container">
+    <div class="filter-bar">
+      <h2 class="section-title" style="margin-bottom:0;"><%= t('featured_cars') %></h2>
+      <a href="/cars" class="btn btn-outline btn-sm"><%= t('cta_view_all') %></a>
+    </div>
+
+    <div class="car-grid">
+      <% featured.forEach(function(car) { %>
+        <div class="car-card">
+          <a href="/cars/<%= car.id %>" class="car-card-img">
+            <img src="<%= car.image %>" alt="<%= lang === 'am' ? car.titleAm : car.titleEn %>" style="width:100%;height:100%;object-fit:cover;" />
+          </a>
+          <div class="car-card-body">
+            <div class="badge-row">
+              <% if (car.listingType === 'rent' || car.listingType === 'both') { %>
+                <span class="badge rent"><%= t('for_rent_label') %></span>
+              <% } %>
+              <% if (car.listingType === 'sell' || car.listingType === 'both') { %>
+                <span class="badge sale"><%= t('for_sale_label') %></span>
+              <% } %>
+            </div>
+            <h3><%= lang === 'am' ? car.titleAm : car.titleEn %></h3>
+            <div class="car-meta"><%= car.brand %> &middot; <%= car.model %> &middot; <%= car.year %></div>
+            <div class="car-card-footer">
+              <div class="plate">
+                <% if (car.listingType === 'rent') { %>
+                  <%= car.rentPricePerDay.toLocaleString() %> <span class="unit">ETB<%= t('per_day') %></span>
+                <% } else if (car.listingType === 'sell') { %>
+                  <%= car.sellPrice.toLocaleString() %> <span class="unit">ETB</span>
+                <% } else { %>
+                  <%= car.rentPricePerDay.toLocaleString() %> <span class="unit">ETB<%= t('per_day') %></span>
+                <% } %>
+              </div>
+              <a href="/cars/<%= car.id %>" class="btn btn-green btn-sm"><%= t('view_details') %></a>
+            </div>
+          </div>
+        </div>
+      <% }); %>
+    </div>
+  </div>
+</section>
+
+<%- include('partials/footer') %>

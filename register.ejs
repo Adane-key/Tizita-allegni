@@ -1,0 +1,38 @@
+<%- include('partials/header') %>
+
+<div class="form-card">
+  <h1><%= t('register_title') %></h1>
+  <p class="sub"><%= t('register_subtitle') %></p>
+
+  <% if (error) { %><div class="form-error"><%= error %></div><% } %>
+
+  <form action="/register" method="POST">
+    <div class="field">
+      <label><%= t('full_name') %></label>
+      <input type="text" name="fullName" value="<%= form.fullName || '' %>" required />
+    </div>
+    <div class="field">
+      <label><%= t('email') %></label>
+      <input type="email" name="email" value="<%= form.email || '' %>" required />
+    </div>
+    <div class="field">
+      <label><%= t('phone') %></label>
+      <input type="tel" name="phone" value="<%= form.phone || '' %>" required placeholder="+251 9XX XXX XXX" />
+    </div>
+    <div class="field">
+      <label><%= t('password') %></label>
+      <input type="password" name="password" required minlength="6" />
+    </div>
+    <div class="field">
+      <label><%= t('confirm_password') %></label>
+      <input type="password" name="confirmPassword" required minlength="6" />
+    </div>
+    <button type="submit" class="btn btn-gold btn-block"><%= t('register_btn') %></button>
+  </form>
+
+  <div class="form-footer-note">
+    <%= t('already_have_account') %> <a href="/login" style="color:var(--gold);"><%= t('nav_login') %></a>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

@@ -1,0 +1,81 @@
+<%- include('../partials/header') %>
+
+<div class="form-card" style="max-width:600px;">
+  <h1><%= car ? t('edit') : t('add_new_car') %></h1>
+
+  <form action="<%= car ? '/admin/cars/' + car.id + '/edit' : '/admin/cars/new' %>" method="POST">
+    <div class="date-row">
+      <div class="field">
+        <label><%= t('brand') %></label>
+        <input type="text" name="brand" value="<%= car ? car.brand : '' %>" required />
+      </div>
+      <div class="field">
+        <label><%= t('model') %></label>
+        <input type="text" name="model" value="<%= car ? car.model : '' %>" required />
+      </div>
+    </div>
+
+    <div class="field">
+      <label><%= t('year') %></label>
+      <input type="number" name="year" value="<%= car ? car.year : '' %>" min="1990" max="2030" required />
+    </div>
+
+    <div class="field">
+      <label><%= t('car_title_en') %></label>
+      <input type="text" name="titleEn" value="<%= car ? car.titleEn : '' %>" required />
+    </div>
+    <div class="field">
+      <label><%= t('car_title_am') %></label>
+      <input type="text" name="titleAm" value="<%= car ? car.titleAm : '' %>" required />
+    </div>
+
+    <div class="field">
+      <label><%= t('car_desc_en') %></label>
+      <textarea name="descEn" required><%= car ? car.descEn : '' %></textarea>
+    </div>
+    <div class="field">
+      <label><%= t('car_desc_am') %></label>
+      <textarea name="descAm" required><%= car ? car.descAm : '' %></textarea>
+    </div>
+
+    <div class="field">
+      <label><%= t('listing_type') %></label>
+      <select name="listingType" required>
+        <option value="rent" <%= car && car.listingType === 'rent' ? 'selected' : '' %>><%= t('filter_rent') %></option>
+        <option value="sell" <%= car && car.listingType === 'sell' ? 'selected' : '' %>><%= t('filter_sell') %></option>
+        <option value="both" <%= car && car.listingType === 'both' ? 'selected' : '' %>><%= t('for_rent_label') %> + <%= t('for_sale_label') %></option>
+      </select>
+    </div>
+
+    <div class="date-row">
+      <div class="field">
+        <label><%= t('rent_price') %></label>
+        <input type="number" name="rentPricePerDay" value="<%= car && car.rentPricePerDay ? car.rentPricePerDay : '' %>" min="0" />
+      </div>
+      <div class="field">
+        <label><%= t('sell_price') %></label>
+        <input type="number" name="sellPrice" value="<%= car && car.sellPrice ? car.sellPrice : '' %>" min="0" />
+      </div>
+    </div>
+
+    <div class="field">
+      <label><%= t('image_url') %></label>
+      <input type="text" name="image" value="<%= car ? car.image : '/images/car-placeholder.svg' %>" />
+    </div>
+
+    <% if (car) { %>
+      <div class="field">
+        <label><%= t('status') %></label>
+        <select name="status">
+          <option value="available" <%= car.status === 'available' ? 'selected' : '' %>><%= t('available') %></option>
+          <option value="booked" <%= car.status === 'booked' ? 'selected' : '' %>><%= t('booked') %></option>
+          <option value="sold" <%= car.status === 'sold' ? 'selected' : '' %>><%= t('sold') %></option>
+        </select>
+      </div>
+    <% } %>
+
+    <button type="submit" class="btn btn-gold btn-block"><%= t('save') %></button>
+  </form>
+</div>
+
+<%- include('../partials/footer') %>

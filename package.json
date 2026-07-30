@@ -1,0 +1,21 @@
+{
+  "name": "nathy-car",
+  "version": "1.0.0",
+  "description": "NATHY CAR - Car rental and sales platform for Hossana, Central Ethiopia",
+  "main": "server.js",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "seed": "node lib/seed.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "express-session": "^1.18.0",
+    "ejs": "^3.1.10",
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^16.4.5",
+    "method-override": "^3.0.0"
+  }
+}

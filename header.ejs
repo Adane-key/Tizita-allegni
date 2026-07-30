@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="<%= lang %>">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= typeof pageTitle !== 'undefined' ? pageTitle + ' | ' : '' %><%= t('site_name') %></title>
+  <meta name="description" content="<%= t('hero_sub') %>" />
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body data-lang="<%= lang %>">
+  <header class="site-header">
+    <div class="header-inner container">
+      <a href="/" class="logo">NATHY<span class="dot">.</span>CAR</a>
+      <nav class="main-nav">
+        <a href="/" class="nav-link"><%= t('nav_home') %></a>
+        <a href="/cars?type=rent" class="nav-link"><%= t('nav_rent') %></a>
+        <a href="/cars?type=sell" class="nav-link"><%= t('nav_sell') %></a>
+        <% if (currentUser) { %>
+          <a href="/dashboard" class="nav-link"><%= t('nav_dashboard') %></a>
+          <% if (currentUser.role === 'admin') { %>
+            <a href="/admin" class="nav-link"><%= t('nav_admin') %></a>
+          <% } %>
+          <a href="/logout" class="nav-link"><%= t('nav_logout') %></a>
+        <% } else { %>
+          <a href="/login" class="nav-link"><%= t('nav_login') %></a>
+          <a href="/register" class="nav-link"><%= t('nav_register') %></a>
+        <% } %>
+        <div class="lang-switch">
+          <a href="/lang/en" class="<%= lang === 'en' ? 'active' : '' %>">EN</a>
+          <a href="/lang/am" class="<%= lang === 'am' ? 'active' : '' %>">አማ</a>
+        </div>
+      </nav>
+    </div>
+    <div class="road-divider"></div>
+  </header>
+  <main>

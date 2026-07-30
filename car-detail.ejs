@@ -1,0 +1,105 @@
+<%- include('partials/header') %>
+
+<section class="section" style="padding-top:36px;">
+  <div class="container">
+    <a href="/cars" class="btn btn-outline btn-sm" style="margin-bottom:20px;">&larr; <%= t('back_to_cars') %></a>
+
+    <div class="detail-grid">
+      <div>
+        <div class="detail-img">
+          <img src="<%= car.image %>" alt="<%= lang === 'am' ? car.titleAm : car.titleEn %>" style="width:100%;height:100%;object-fit:cover;border-radius:6px;" />
+        </div>
+      </div>
+
+      <div>
+        <div class="badge-row" style="margin-bottom:12px;">
+          <% if (car.listingType === 'rent' || car.listingType === 'both') { %>
+            <span class="badge rent"><%= t('for_rent_label') %></span>
+          <% } %>
+          <% if (car.listingType === 'sell' || car.listingType === 'both') { %>
+            <span class="badge sale"><%= t('for_sale_label') %></span>
+          <% } %>
+        </div>
+
+        <h1><%= lang === 'am' ? car.titleAm : car.titleEn %></h1>
+
+        <table class="spec-table">
+          <tr><td><%= t('brand') %></td><td><%= car.brand %></td></tr>
+          <tr><td><%= t('model') %></td><td><%= car.model %></td></tr>
+          <tr><td><%= t('year') %></td><td><%= car.year %></td></tr>
+          <tr><td><%= t('status') %></td><td><%= t(car.status) %></td></tr>
+        </table>
+
+        <h3 style="font-size:1rem;margin-top:20px;"><%= t('description') %></h3>
+        <p style="color:var(--muted);"><%= lang === 'am' ? car.descAm : car.descEn %></p>
+
+        <% if (bookingError) { %>
+          <div class="form-error"><%= bookingError %></div>
+        <% } %>
+
+        <% if (!currentUser) { %>
+          <div class="booking-box">
+            <p style="margin:0 0 14px;color:var(--muted);"><%= t('login_to_book') %></p>
+            <a href="/login" class="btn btn-gold btn-block"><%= t('nav_login') %></a>
+          </div>
+        <% } else { %>
+          <% if (car.listingType === 'rent' || car.listingType === 'both') { %>
+            <div class="booking-box">
+              <h3><%= t('book_this_car') %></h3>
+              <form action="/cars/<%= car.id %>/book" method="POST" id="rentForm">
+                <div class="date-row">
+                  <div class="field">
+                    <label><%= t('start_date') %></label>
+                    <input type="date" name="startDate" id="startDate" required />
+                  </div>
+                  <div class="field">
+                    <label><%= t('end_date') %></label>
+                    <input type="date" name="endDate" id="endDate" required />
+                  </div>
+                </div>
+                <div class="total-line">
+                  <span><%= t('estimated_total') %></span>
+                  <span id="totalDisplay">0 ETB</span>
+                </div>
+                <button type="submit" class="btn btn-gold btn-block"><%= t('confirm_booking') %></button>
+              </form>
+            </div>
+            <script>
+              (function () {
+                var rate = <%= car.rentPricePerDay || 0 %>;
+                var start = document.getElementById('startDate');
+                var end = document.getElementById('endDate');
+                var out = document.getElementById('totalDisplay');
+                function update() {
+                  if (!start.value || !end.value) return;
+                  var s = new Date(start.value);
+                  var e = new Date(end.value);
+                  var days = Math.max(1, Math.ceil((e - s) / (1000 * 60 * 60 * 24)));
+                  if (e < s) { out.textContent = '—'; return; }
+                  out.textContent = (days * rate).toLocaleString() + ' ETB (' + days + 'd)';
+                }
+                start.addEventListener('change', update);
+                end.addEventListener('change', update);
+              })();
+            </script>
+          <% } %>
+
+          <% if (car.listingType === 'sell' || car.listingType === 'both') { %>
+            <div class="booking-box">
+              <h3><%= t('buy_this_car') %></h3>
+              <div class="total-line" style="border-top:none;padding-top:0;">
+                <span><%= t('sell_price') %></span>
+                <span class="plate"><%= car.sellPrice ? car.sellPrice.toLocaleString() : '-' %> <span class="unit">ETB</span></span>
+              </div>
+              <form action="/cars/<%= car.id %>/buy" method="POST">
+                <button type="submit" class="btn btn-green btn-block"><%= t('submit_inquiry') %></button>
+              </form>
+            </div>
+          <% } %>
+        <% } %>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%- include('partials/footer') %>

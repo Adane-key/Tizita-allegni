@@ -1,0 +1,26 @@
+<%- include('partials/header') %>
+
+<div class="form-card">
+  <h1><%= t('login_title') %></h1>
+  <p class="sub"><%= t('login_subtitle') %></p>
+
+  <% if (error) { %><div class="form-error"><%= error %></div><% } %>
+
+  <form action="/login" method="POST">
+    <div class="field">
+      <label><%= t('email') %></label>
+      <input type="email" name="email" value="<%= form.email || '' %>" required />
+    </div>
+    <div class="field">
+      <label><%= t('password') %></label>
+      <input type="password" name="password" required />
+    </div>
+    <button type="submit" class="btn btn-gold btn-block"><%= t('login_btn') %></button>
+  </form>
+
+  <div class="form-footer-note">
+    <%= t('no_account_yet') %> <a href="/register" style="color:var(--gold);"><%= t('nav_register') %></a>
+  </div>
+</div>
+
+<%- include('partials/footer') %>
